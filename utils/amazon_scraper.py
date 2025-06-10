@@ -1,8 +1,8 @@
 import os
 import json
 import datetime
-import tkinter as tk
-from tkinter import filedialog, messagebox
+# import tkinter as tk
+# from tkinter import filedialog, messagebox
 from playwright.sync_api import sync_playwright
 
 # Global variables
@@ -167,77 +167,77 @@ def extract_pdp_data(page):
 
     return pdp_data
 
-# === GUI ===
-def start_gui():
-    def add_link():
-        link = link_entry.get().strip()
-        if link:
-            links_listbox.insert(tk.END, link)
-            link_entry.delete(0, tk.END)
+# # === GUI ===
+# def start_gui():
+#     def add_link():
+#         link = link_entry.get().strip()
+#         if link:
+#             links_listbox.insert(tk.END, link)
+#             link_entry.delete(0, tk.END)
 
-    def browse_dir():
-        global output_dir
-        output_dir = filedialog.askdirectory()
-        if output_dir:
-            dir_label.config(text=output_dir)
+#     def browse_dir():
+#         global output_dir
+#         output_dir = filedialog.askdirectory()
+#         if output_dir:
+#             dir_label.config(text=output_dir)
 
-    def start_scraping():
-        global pdp_links
-        pdp_links = list(links_listbox.get(0, tk.END))
-        if not pdp_links or not output_dir:
-            messagebox.showerror("Error", "Please add PDP links and select an output directory.")
-            return
-        root.destroy()
+#     def start_scraping():
+#         global pdp_links
+#         pdp_links = list(links_listbox.get(0, tk.END))
+#         if not pdp_links or not output_dir:
+#             messagebox.showerror("Error", "Please add PDP links and select an output directory.")
+#             return
+#         root.destroy()
 
-    root = tk.Tk()
-    root.title("🧬 Amazon PDP Scraper")
-    root.geometry("620x420")
+#     root = tk.Tk()
+#     root.title("🧬 Amazon PDP Scraper")
+#     root.geometry("620x420")
 
-    tk.Label(root, text="🔗 Enter Amazon PDP Links:").pack(pady=(10, 2))
-    link_entry = tk.Entry(root, width=65)
-    link_entry.pack()
-    tk.Button(root, text="➕ Add Link", command=add_link).pack(pady=4)
-    links_listbox = tk.Listbox(root, width=80, height=6)
-    links_listbox.pack()
+#     tk.Label(root, text="🔗 Enter Amazon PDP Links:").pack(pady=(10, 2))
+#     link_entry = tk.Entry(root, width=65)
+#     link_entry.pack()
+#     tk.Button(root, text="➕ Add Link", command=add_link).pack(pady=4)
+#     links_listbox = tk.Listbox(root, width=80, height=6)
+#     links_listbox.pack()
 
-    tk.Button(root, text="📁 Choose Output Directory", command=browse_dir).pack(pady=8)
-    dir_label = tk.Label(root, text="")
-    dir_label.pack()
+#     tk.Button(root, text="📁 Choose Output Directory", command=browse_dir).pack(pady=8)
+#     dir_label = tk.Label(root, text="")
+#     dir_label.pack()
 
-    tk.Button(root, text="🚀 Start PDP Scraping", command=start_scraping).pack(pady=15)
-    root.mainloop()
+#     tk.Button(root, text="🚀 Start PDP Scraping", command=start_scraping).pack(pady=15)
+#     root.mainloop()
 
-# === PDP Scraper ===
-def scrape_pdps():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        context = browser.new_context()
-        extracted_data = []
+# # === PDP Scraper ===
+# def scrape_pdps():
+#     with sync_playwright() as p:
+#         browser = p.chromium.launch(headless=True)
+#         context = browser.new_context()
+#         extracted_data = []
 
-        for url in pdp_links:
-            try:
-                print(f"🔍 Scraping: {url}")
-                page = context.new_page()
-                page.goto(url, timeout=60000)
-                page.wait_for_timeout(3000)
+#         for url in pdp_links:
+#             try:
+#                 print(f"🔍 Scraping: {url}")
+#                 page = context.new_page()
+#                 page.goto(url, timeout=60000)
+#                 page.wait_for_timeout(3000)
 
-                pdp_info = extract_pdp_data(page)
-                pdp_info["Product URL"] = url
-                pdp_info["Date of Extraction"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                extracted_data.append(pdp_info)
+#                 pdp_info = extract_pdp_data(page)
+#                 pdp_info["Product URL"] = url
+#                 pdp_info["Date of Extraction"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#                 extracted_data.append(pdp_info)
 
-                page.close()
-                print("✅ Done")
-            except Exception as e:
-                print(f"❌ Error scraping {url}: {e}")
+#                 page.close()
+#                 print("✅ Done")
+#             except Exception as e:
+#                 print(f"❌ Error scraping {url}: {e}")
 
-        file_path = os.path.join(output_dir, "amazon_pdp_data.json")
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(extracted_data, f, ensure_ascii=False, indent=2)
-        print(f"\n🧾 Scraping complete. Saved to: {file_path}")
-        browser.close()
+#         file_path = os.path.join(output_dir, "amazon_pdp_data.json")
+#         with open(file_path, "w", encoding="utf-8") as f:
+#             json.dump(extracted_data, f, ensure_ascii=False, indent=2)
+#         print(f"\n🧾 Scraping complete. Saved to: {file_path}")
+#         browser.close()
 
-# === Main Execution ===
-if __name__ == "__main__":
-    start_gui()
-    scrape_pdps()
+# # === Main Execution ===
+# if __name__ == "__main__":
+#     start_gui()
+#     scrape_pdps()
