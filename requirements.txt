@@ -15,4 +15,4 @@ beautifulsoup4
 playwright
 nest_asyncio
 datetime
-tkinter
+tk
