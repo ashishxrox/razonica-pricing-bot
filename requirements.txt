@@ -1,0 +1,17 @@
+pandas
+numpy
+jupyter
+
+scikit-learn
+
+openai
+
+python-dotenv
+
+streamlit
+
+requests 
+beautifulsoup4
+playwright
+nest_asyncio
+datetime

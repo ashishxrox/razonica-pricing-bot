@@ -1,0 +1,10 @@
+.env
+venv/
+ajio_output/
+ajio_pdp_output/
+PDP\ Only\ STEP\ 1/
+.ipynb_checkpoints/
+preprocessed_data/
+product_embeddings/
+raw_data/
+SampleData/
